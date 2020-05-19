@@ -42,6 +42,8 @@ button_plus = Button(root, text="+", padx=_padx, pady=_pady, command=lambda: but
 button_minus = Button(root, text="-", padx=_padx, pady=_pady, command=lambda: button_click('-'))
 button_multiply = Button(root, text="*", padx=_padx, pady=_pady, command=lambda: button_click('*'))
 button_divide = Button(root, text="/", padx=_padx, pady=_pady, command=lambda: button_click('/'))
+button_modulo = Button(root, text="%", padx=_padx, pady=_pady, command=lambda: button_click('%'))
+button_exp = Button(root, text="e", padx=_padx, pady=_pady, command=lambda: button_click('e'))
 
 button_equal = Button(root, text="=", padx=_padx, pady=_pady, command=lambda: button_calculate(e.get()))
 button_clear = Button(root, text="C", padx=_padx, pady=_pady, command=lambda: button_clear())
@@ -69,6 +71,7 @@ button_minus.grid(row=2, column=3)
 button_multiply.grid(row=3, column=3)
 button_divide.grid(row=4, column=3)
 
+button_modulo.grid(row=5, column=3)
 
 root.mainloop()
 

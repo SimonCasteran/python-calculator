@@ -10,10 +10,14 @@ class calculator():
             if rpn[j]=='(' or rpn[j]==')':
                 rpn.pop(j)
             j += 1
-        self.result = self.operate(rpn)
+        try:
+            self.result = self.operate(rpn)
+        except:
+            self.result = 'Invalid operation'
 
     def toRpn(self, string):
-        table = re.split(r' *([\+\-\*\^\(\)/]) *', string)
+        print(string)
+        table = re.split(r' *([\+\-\*\^\%e/]) *', string)
         i = 0
         while i < len(table):
             if table[i]=='':
@@ -22,16 +26,19 @@ class calculator():
         print(table)
         tokens = [t for t in reversed(table) if t!='']
         print(tokens)
-        precs = {'+':0 , '-':0, '/':1, '*':1, 'x':1, '^':2, '(':3, ')':3}
+        precs = {'+':0 , '-':0, '/':1, '*':1, 'x':1, '^':2, '%':3, 'e':4, '(':5, ')':5}
 
         def toRpn2(tokens, minprec):
-            rpn = tokens.pop()
+            try:
+                rpn = tokens.pop()
+            except:
+                return 'NaN'
 
             while len(tokens)>0:
-                try:
-                    prec = precs[tokens[-1]]
-                except KeyError:
-                    prec = precs[tokens[-2]]
+                # try:
+                prec = precs[tokens[-1]]
+                # except KeyError:
+                #     prec = precs[tokens[-2]]
                 
                 if prec<minprec:
                     break
@@ -57,10 +64,20 @@ class calculator():
             return rpn[0]
         while i < limit:
             # print('position: '+str(i))
+            if rpn[i] =='e':
+                res = int(rpn[i-2]) * 10 ** int(rpn[i-1])
+                rpn[i-2]=res
+                rpn.pop(i-1)
+                rpn.pop(i-1)
+                return self.operate(rpn)
+            if rpn[i] == '%':
+                res = int(rpn[i-2]) % int(rpn[i-1])
+                rpn[i-2]=res
+                rpn.pop(i-1)
+                rpn.pop(i-1)
+                return self.operate(rpn)
             if rpn[i] == '^':
                 res = int(rpn[i-2]) ** int(rpn[i-1])
-                # print(rpn[i-2]+' '+rpn[i-1])
-                # print('res: '+str(res))
                 rpn[i-2]=res
                 rpn.pop(i-1)
                 rpn.pop(i-1)
@@ -69,14 +86,12 @@ class calculator():
             if rpn[i]=='*' or rpn[i]=='/':
                 if rpn[i] == '*':
                     res = int(rpn[i-2]) * int(rpn[i-1])
-                    # print('res: '+str(res))
                     rpn[i-2]=res
                     rpn.pop(i-1)
                     rpn.pop(i-1)
                     return self.operate(rpn)
                 if rpn[i] == '/':
                     res = int(rpn[i-2]) / int(rpn[i-1])
-                    # print('res: '+str(res))
                     rpn[i-2]=res
                     rpn.pop(i-1)
                     rpn.pop(i-1)
@@ -85,14 +100,12 @@ class calculator():
             if rpn[i]=='+' or rpn[i]=='-':
                 if rpn[i] == '+':
                     res = int(rpn[i-2]) + int(rpn[i-1])
-                    # print('res: '+str(res))
                     rpn[i-2]=res
                     rpn.pop(i-1)
                     rpn.pop(i-1)
                     return self.operate(rpn)
                 if rpn[i] == '-':
                     res = int(rpn[i-2]) - int(rpn[i-1])
-                    # print('res: '+str(res))
                     rpn[i-2]=res
                     rpn.pop(i-1)
                     rpn.pop(i-1)
